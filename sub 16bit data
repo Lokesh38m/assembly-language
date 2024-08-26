@@ -1,0 +1,42 @@
+org 100h
+
+num1 dw 29h                                                       ; Define num1 as a 16-bit word (dw)
+num2 dw 24h                                                       ; Define num2 as a 16-bit word (dw)
+
+start:
+    mov ax, num1                                        ; Load 16-bit num1 into AX
+    sub ax, num2                                     ; Subtract 16-bit num2 from AX
+
+    mov bx, ax                                         ; Copy result from AX to BX
+
+                                             ; Convert higher byte of AX to ASCII and print
+    mov ah, al                                      ; Move lower byte of AX to AH (isolate it)
+    and ah, 0F0h                            ; Mask higher nibble
+    shr ah, 4                      ; Shift higher nibble to lower position
+    add ah, 30h                         ; Convert to ASCII
+    cmp ah, 39h                  ; Check if it's greater than '9'
+    jle print_first_digit
+    add ah, 7                   ; Adjust to get ASCII letter if greater than 9
+
+print_first_digit:
+    mov dl, ah                    ; Move the higher nibble to DL for printing
+    mov ah, 02h                       ; DOS print character function
+    int 21h                               ; Call DOS interrupt
+
+                              ; Convert lower byte of AX to ASCII and print
+    mov ah, al                      ; Move the original lower byte value
+    and ah, 0Fh                       ; Mask lower nibble
+    add ah, 30h                         ; Convert to ASCII
+    cmp ah, 39h                       ; Check if it's greater than '9'
+    jle print_second_digit
+    add ah, 7                              ; Adjust to get ASCII letter if greater than 9
+
+print_second_digit:
+    mov dl, ah                              ; Move the lower nibble to DL for printing
+    mov ah, 02h                               ; DOS print character function
+    int 21h                                ; Call DOS interrupt
+
+    mov ah, 4Ch                        ; DOS terminate program function
+    int 21h                        ; Call DOS interrupt
+
+ret
