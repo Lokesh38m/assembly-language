@@ -1,0 +1,49 @@
+org 100h
+
+JMP start
+
+input1 db "Enter the First Number: $"
+input2 db 0Dh,0Ah,"Enter the Second Number: $"
+output db 0ah,0dh,"The Difference is: $"
+
+start:
+
+    ; Prompt for the first number
+    mov dx, offset input1
+    mov ah, 09h
+    int 21h
+
+    ; Read first number as character
+    mov ah, 01h
+    int 21h
+    sub al, 30h  ; Convert ASCII to numeric
+    mov bl, al   ; Store first number in bl
+
+    ; Prompt for the second number
+    mov dx, offset input2
+    mov ah, 09h
+    int 21h
+
+    ; Read second number as character
+    mov ah, 01h
+    int 21h
+    sub al, 30h  ; Convert ASCII to numeric
+
+    ; Perform subtraction (bl - al)
+    sub bl, al
+
+    ; Display the output message
+    mov dx, offset output
+    mov ah, 09h
+    int 21h
+
+    ; Convert the result back to ASCII
+    add bl, 30h
+
+    ; Display the result
+    mov dl, bl
+    mov ah, 02h
+    int 21h
+
+    ; Return control to DOS
+    ret
