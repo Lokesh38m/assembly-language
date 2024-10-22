@@ -1,0 +1,20 @@
+ORG 100h             
+
+; Display the message "The two-digit number is: "
+MOV AH, 09h           
+MOV DX, OFFSET msg_output 
+INT 21h                
+; Display the first digit
+MOV DL, '3'            
+MOV AH, 02h           
+INT 21h              
+
+; Display the second digit
+MOV DL, '8'           
+MOV AH, 02h            ; Function 02h of INT 21h to print a character
+INT 21h               
+; Terminate the program
+MOV AH, 4Ch            ; Function 4Ch of INT 21h terminates the program
+INT 21h                
+
+msg_output DB 0Dh, 0Ah, 'The two-digit number is: $'  ; Output message with newline (CRLF)
