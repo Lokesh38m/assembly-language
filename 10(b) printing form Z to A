@@ -1,0 +1,16 @@
+ORG 100h               ; Set origin for COM file
+
+MOV CX, 26             ; Set counter to 26 for letters 'z' to 'a'
+MOV AL, 'z'            ; Load ASCII code for 'z' into AL
+
+print_loop:
+    MOV DL, AL         ; Move current character to DL for printing
+    MOV AH, 02h        ; DOS function to print a character
+    INT 21h            ; Call interrupt to print character in DL
+
+    DEC AL             ; Move to the previous ASCII character (from 'z' to 'a')
+    LOOP print_loop    ; Decrement CX and repeat until CX is zero
+
+    ; Exit program
+    MOV AH, 4Ch        ; DOS function to exit program
+    INT 21h
